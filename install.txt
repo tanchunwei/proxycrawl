@@ -1,0 +1,6 @@
+request
+beautifulsoup
+bs4
+lxml
+flask
+schedule
