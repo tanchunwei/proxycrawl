@@ -2,3 +2,5 @@ request
 beautifulsoup
 bs4
 lxml
+gunicorn
+flask

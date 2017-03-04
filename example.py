@@ -1,10 +1,10 @@
 from IP_Spider import IP_Spider
-import schedule
-import time
+from flask import Flask, jsonify
+app = Flask(__name__)
 
-
-spider = IP_Spider()
-spider.generate_ip_pool()
-for one_ip in spider.ip_pool:
-	print one_ip
+@app.route("/")
+	def getIpPair():
+		spider = IP_Spider()
+		ip = spider.generate_ip_pool()
+		return jsonify(ip)
 	
