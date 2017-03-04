@@ -6,7 +6,7 @@ app = Flask(__name__)
 def getIpPair():
 	spider = IP_Spider()
 	ip = spider.generate_ip_pool()
-	return jsonify(ip)
+	return jsonify(result=[e.serialize() for e in ip])
 	
 if __name__ == '__main__':
     app.run()

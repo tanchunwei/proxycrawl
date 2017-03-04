@@ -1,9 +1,7 @@
-# Author: Hao in UT Austin
-# Crawle free proxy IPs from http://www2.waselproxy.com/, https://nordvpn.com/free-proxy-list/, https://www.hide-my-ip.com/proxylist.shtml
-# Output: list oject, ip_pool
 import requests
 from bs4 import BeautifulSoup
 import json
+from ProxyInfo import ProxyInfo
 
 class IP_Spider(object):
 	def __init__(self):
@@ -25,7 +23,7 @@ class IP_Spider(object):
 						x = one.find_all("td")
 						ip = "http://" + x[0].text + ":" + x[1].text
 						country = x[2].find_all("span")[1].text
-						self.ip_pool.append((ip,country))
+						self.ip_pool.append(ProxyInfo(ip,country))
 				except:
 					continue
 					
