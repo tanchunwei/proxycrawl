@@ -7,8 +7,8 @@ app = Flask(__name__)
 @app.route("/<int:sel>")
 def getIpPair(sel):
 	spider = IP_Spider()
-	spider.generate_ip_pool(sel)
-	return jsonify(spider.ip_pool)
+	ip_pool = spider.generate_ip_pool(sel)
+	return jsonify(ip_pool)
 	
 if __name__ == '__main__':
     app.run()

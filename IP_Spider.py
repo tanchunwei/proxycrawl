@@ -5,16 +5,31 @@ from enum import Enum
 
 class ProxySelector(Enum):
 	waselproxy = 1
-	proxylistplus = 2
+	listplusproxy = 2
 	all = 3
-
-class IP_Spider(object):
+	
+class Proxy:
 	def __init__(self):
 		self.ip_pool = []
 		self.country_whitelist = ["Germany","Canada","United States", "United Kingdom", "France", "Italy", "Netherland","Poland", "Switzerland"]
+	
+	def get_proxy_ip(self):
+		raise NotImplementedError("Subclass must implement abstract method")
 
-	def get_proxy_from_waselproxy(self):
-		# Crawl from http://www2.waselproxy.com/
+class ProxyFactory:
+	def create_proxy(self, selector):
+		if(selector == ProxySelector.waselproxy.value):
+			return WaselProxy()
+		if(selector == ProxySelector.listplusproxy.value):
+			return ListPlusProxy()
+		return NoneProxy()
+			
+class NoneProxy(Proxy):
+	def get_proxy_ip(self):
+		return []
+			
+class WaselProxy(Proxy):
+	def get_proxy_ip(self):
 		for page in range(1,3):
 			get_url = "http://www2.waselproxy.com/page/" + str(page)
 			p = requests.get(get_url)					
@@ -34,9 +49,9 @@ class IP_Spider(object):
 					continue
 					
 		return self.ip_pool
-
-	def get_proxy_from_proxylistplus(self):
-
+		
+class ListPlusProxy(Proxy):
+	def get_proxy_ip(self):
 		# Crawl from https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-1
 		for page in range(1, 11):
 			get_url = "https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-" + str(page)
@@ -57,16 +72,24 @@ class IP_Spider(object):
 				except:
 					continue
 		return self.ip_pool
+
+class IP_Spider(object):
 	
 	def generate_ip_pool(self, sel):
-		if(sel & ProxySelector.waselproxy.value):
-			self.get_proxy_from_waselproxy()
-		if(sel & ProxySelector.proxylistplus.value):
-			self.get_proxy_from_proxylistplus()
+		proxyList = []
+		
+		for ps in ProxySelector:
+			if ps !=  ProxySelector.all:
+				proxy = ProxyFactory().create_proxy(sel & ps.value)
+				proxyList.append(proxy)
+		
+		proxyIp = []
+		for proxy in proxyList:
+			proxyIp += proxy.get_proxy_ip()
+		return proxyIp
 
 if __name__ == '__main__':
 	foo = IP_Spider()
-	foo.generate_ip_pool(ProxySelector.all.value)
-	x = foo.ip_pool
+	x = foo.generate_ip_pool(ProxySelector.all.value)
 	print(len(x))
 	print(x)
