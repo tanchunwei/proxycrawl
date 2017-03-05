@@ -1,6 +1,7 @@
 from IP_Spider import IP_Spider
 from flask import Flask, jsonify
 app = Flask(__name__)
+import json
 
 @app.route("/")
 def getIpPair():
