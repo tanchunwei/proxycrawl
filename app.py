@@ -1,8 +1,9 @@
 from IP_Spider import IP_Spider
+from IP_Spider import ProxySelector
 from flask import Flask, jsonify
 app = Flask(__name__)
 
-@app.route("/", defaults={'sel': 0})
+@app.route("/", defaults={'sel': ProxySelector.all.value})
 @app.route("/<int:sel>")
 def getIpPair(sel):
 	spider = IP_Spider()
