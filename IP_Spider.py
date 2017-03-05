@@ -4,6 +4,7 @@ import json
 from ProxyInfo import ProxyInfo
 
 class IP_Spider(object):
+
 	def __init__(self):
 		self.ip_pool = []
 		self.country_whitelist = ["Germany","Canada","United States", "United Kingdom", "France", "Italy", "Netherland","Poland", "Switzerland"]
@@ -22,9 +23,9 @@ class IP_Spider(object):
 					value = int(x.get('value'))
 					if value >= 50:
 						x = one.find_all("td")
-						ip = "http://" + x[0].text + ":" + x[1].text
 						country = x[2].find_all("span")[1].text
-						self.ip_pool.append(ProxyInfo(ip,country))
+						if country in self.country_whitelist:
+							self.ip_pool.append("{}:{}".format(x[0].text,x[1].text))
 				except:
 					continue
 					
@@ -54,12 +55,12 @@ class IP_Spider(object):
 		return self.ip_pool
 	
 	def generate_ip_pool(self):	
-
-		#return self.get_proxy_from_waselproxy()
-		return self.get_proxy_from_proxylistplus()
+		self.get_proxy_from_waselproxy()
+		self.get_proxy_from_proxylistplus()
 
 if __name__ == '__main__':
 	foo = IP_Spider()
-	x = foo.generate_ip_pool()
+	foo.generate_ip_pool()
+	x = foo.ip_pool
 	print(len(x))
 	print(x)
