@@ -1,9 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+from enum import Enum
+
+class ProxySelector(Enum):
+	waselproxy = 1
+	proxylistplus = 2
+	all = 3
 
 class IP_Spider(object):
-
 	def __init__(self):
 		self.ip_pool = []
 		self.country_whitelist = ["Germany","Canada","United States", "United Kingdom", "France", "Italy", "Netherland","Poland", "Switzerland"]
@@ -53,13 +58,15 @@ class IP_Spider(object):
 					continue
 		return self.ip_pool
 	
-	def generate_ip_pool(self):	
-		self.get_proxy_from_waselproxy()
-		self.get_proxy_from_proxylistplus()
+	def generate_ip_pool(self, sel):
+		if(sel & ProxySelector.waselproxy.value):
+			self.get_proxy_from_waselproxy()
+		if(sel & ProxySelector.proxylistplus.value):
+			self.get_proxy_from_proxylistplus()
 
 if __name__ == '__main__':
 	foo = IP_Spider()
-	foo.generate_ip_pool()
+	foo.generate_ip_pool(ProxySelector.all.value)
 	x = foo.ip_pool
 	print(len(x))
 	print(x)

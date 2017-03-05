@@ -4,6 +4,8 @@ BeautifulSoup==3.2.1
 beautifulsoup4==4.5.3
 bs4==0.0.1
 click==6.7
+dictionaries==0.0.1
+enum34==1.1.6
 Flask==0.12
 gunicorn==19.6.0
 itsdangerous==0.24
