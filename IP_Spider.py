@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from ProxyInfo import ProxyInfo
 
 class IP_Spider(object):
 
