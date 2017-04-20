@@ -9,6 +9,12 @@ def getIpPair(sel):
 	spider = IP_Spider()
 	ip_pool = spider.generate_ip_pool(sel)
 	return jsonify(ip_pool)
+
+@app.route("/sportsLink",)
+def getSportsLink():
+	sportSpider = Sports_Spider()
+	data = sportSpider.generate_sports_pool()
+	return jsonify(data)
 	
 if __name__ == '__main__':
     app.run()
